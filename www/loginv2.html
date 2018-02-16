@@ -1,0 +1,345 @@
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+
+<!DOCTYPE html>
+<html >
+<head>
+<!-- For-Mobile-Apps-and-Meta-Tags -->
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Fortune Estates Widget Responsive, Login Form Web Template, Flat Pricing Tables, Flat Drop-Downs, Sign-Up Web Templates, Flat Web Templates, Login Sign-up Responsive Web Template, SmartPhone Compatible Web Template, Free Web Designs for Nokia, Samsung, LG, Sony Ericsson, Motorola Web Design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- //For-Mobile-Apps-and-Meta-Tags -->
+<!-- Custom Theme files -->
+<link href="css/bootstrap.css" type="text/css" rel="stylesheet" media="all">
+<link href="css/style.css" type="text/css" rel="stylesheet" media="all"> 
+<link rel="stylesheet" href="css/ken-burns.css" type="text/css" media="all" /> 
+<!-- //Custom Theme files -->
+
+<!--..............................Firebase Includes...............................................--> 
+  <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase-messaging.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase-storage.js"></script>
+  
+  <script src="js/jquery-3.1.1.min.js" type="text/javascript"></script>      
+  <script src="js/login.js" type="text/javascript"></script>  
+<!--.............................................................................................-->  
+
+<!-- js -->
+<script src="js/jquery-2.2.3.min.js"></script> 
+<!-- //js -->
+
+<!--//pop-up-box -->
+<!-- web-fonts -->  
+<link href='//fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+
+
+  <style>
+  body{
+    margin:0;
+    color:#6a6f8c;
+	background:#c8c8c8;
+	font:600 16px/18px 'Open Sans',sans-serif;
+}
+*,:after,:before{box-sizing:border-box}
+.clearfix:after,.clearfix:before{content:'';display:table}
+.clearfix:after{clear:both;display:block}
+a{color:inherit;text-decoration:none}
+
+.login-wrap{
+	width:100%;
+	margin:auto;
+	max-width:525px;
+	min-height:670px;
+	position:relative;
+	background:url(https://raw.githubusercontent.com/khadkamhn/day-01-login-form/master/img/bg.jpg) no-repeat center;
+	box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+}
+.login-html{
+	width:100%;
+	height:100%;
+	position:absolute;
+	padding:90px 70px 50px 70px;
+	background:rgba(40,57,101,.9);
+}
+.login-html .sign-in-htm,
+.login-html .sign-up-htm{
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	position:absolute;
+	-webkit-transform:rotateY(180deg);
+	        transform:rotateY(180deg);
+	-webkit-backface-visibility:hidden;
+	        backface-visibility:hidden;
+	-webkit-transition:all .4s linear;
+	transition:all .4s linear;
+}
+.login-html .sign-in,
+.login-html .sign-up,
+.login-form .group .check{
+	display:none;
+}
+.login-html .tab,
+.login-form .group .label,
+.login-form .group .button{
+	text-transform:uppercase;
+}
+.login-html .tab{
+	font-size:22px;
+	margin-right:15px;
+	padding-bottom:5px;
+	margin:0 15px 10px 0;
+	display:inline-block;
+	border-bottom:2px solid transparent;
+}
+.login-html .sign-in:checked + .tab,
+.login-html .sign-up:checked + .tab{
+	color:#fff;
+	border-color:#1161ee;
+}
+.login-form{
+	min-height:345px;
+	position:relative;
+	-webkit-perspective:1000px;
+	        perspective:1000px;
+	-webkit-transform-style:preserve-3d;
+	        transform-style:preserve-3d;
+}
+.login-form .group{
+	margin-bottom:15px;
+}
+.login-form .group .label,
+.login-form .group .input,
+.login-form .group .button{
+	width:100%;
+	color:#fff;
+	display:block;
+}
+.login-form .group .input,
+.login-form .group .button{
+	border:none;
+	padding:15px 20px;
+	border-radius:25px;
+	background:rgba(255,255,255,.1);
+}
+.login-form .group input[data-type="password"]{
+	text-security:circle;
+	-webkit-text-security:circle;
+}
+.login-form .group .label{
+	/*color:#1db0d8;*/
+    color: white;
+	font-size:12px;
+}
+.login-form .group .button{
+	background:#1161ee;
+}
+.login-form .group label .icon{
+	width:15px;
+	height:15px;
+	border-radius:2px;
+	position:relative;
+	display:inline-block;
+	background:rgba(255,255,255,.1);
+}
+.login-form .group label .icon:before,
+.login-form .group label .icon:after{
+	content:'';
+	width:10px;
+	height:2px;
+	background:#fff;
+	position:absolute;
+	-webkit-transition:all .2s ease-in-out 0s;
+	transition:all .2s ease-in-out 0s;
+}
+.login-form .group label .icon:before{
+	left:3px;
+	width:5px;
+	bottom:6px;
+	-webkit-transform:scale(0) rotate(0);
+	        transform:scale(0) rotate(0);
+}
+.login-form .group label .icon:after{
+	top:6px;
+	right:0;
+	-webkit-transform:scale(0) rotate(0);
+	        transform:scale(0) rotate(0);
+}
+.login-form .group .check:checked + label{
+	color:#fff;
+}
+.login-form .group .check:checked + label .icon{
+	background:#1161ee;
+}
+.login-form .group .check:checked + label .icon:before{
+	-webkit-transform:scale(1) rotate(45deg);
+	        transform:scale(1) rotate(45deg);
+}
+.login-form .group .check:checked + label .icon:after{
+	-webkit-transform:scale(1) rotate(-45deg);
+	        transform:scale(1) rotate(-45deg);
+}
+.login-html .sign-in:checked + .tab + .sign-up + .tab + .login-form .sign-in-htm{
+	-webkit-transform:rotate(0);
+	        transform:rotate(0);
+}
+.login-html .sign-up:checked + .tab + .login-form .sign-up-htm{
+	-webkit-transform:rotate(0);
+	        transform:rotate(0);
+}
+
+.hr{
+	height:2px;
+	margin:60px 0 50px 0;
+	background:rgba(255,255,255,.2);
+}
+.foot-lnk{
+	text-align:center;
+}
+
+.type, #accept{
+color: white;
+}
+
+
+#terms{
+color: #1db0d8;
+}
+
+
+  </style>
+  <link rel='stylesheet prefetch' href='http://fonts.googleapis.com/css?family=Open+Sans:600'>
+
+<script>
+$(document).ready(function(){
+    
+    $("#loader").hide();
+    $("#loader2").hide();
+});
+</script>
+
+
+</head>
+
+<body>
+  <div class="login-wrap">
+	<div class="login-html">
+    
+		<input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
+		<input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
+		
+        <div class="login-form">
+			<div class="sign-in-htm">
+            
+				<div class="group">
+					<label for="user" class="label">Email</label>
+					<input type="text" name="email" required="" id="email_login" class="input">
+				</div>
+                
+				<div class="group">
+					<label for="pass" class="label">Password</label>
+                    <input type="password" name="Password" required="" id="password_login" class="input"> 
+				</div>
+                
+				<div class="group">                                                  
+                    <span id="error_login"></span>
+                    <br>
+                    <input type="submit" value="Sign In" class="button" id="loginbutton"> 
+				</div>
+                
+				<div class="hr"></div>
+                
+				<div class="foot-lnk">
+                    <div class="loader" id="loader" style=""></div>    <!--Loader-->
+				</div>
+                
+			</div>
+            
+		    <div class="sign-up-htm">
+            
+				<div class="group">
+					<label for="user" class="label">Username</label>
+					<input id="username" type="text" class="input">
+				</div>
+                
+                <div class="group">
+    				<label for="emai" class="label">Email</label>
+					<input id="email_signup" type="text" class="input">
+				</div>
+                
+				<div class="group">
+					<label for="pass" class="label">Password</label>
+					<input id="password_signup" type="password" class="input" data-type="password">
+				</div>
+
+				<div class="group">
+					<label for="email" class="label">Role</label>
+                    	<input type="radio" class="type" value="Entrepreneur" name="type"> Entrepreneur<br>
+                        <input type="radio" class="type" value="Investor" name="type"> Investor<br>
+                        <input type="radio" class="type" value="Lecturer" name="type"> Lecturer<br>
+                        <input type="radio" class="type" value="Instructor" name="type"> Instructor
+          		</div>
+                
+                <div class="group">
+                
+                        <input type="checkbox" name="chk" value="Signup" id="brand1">
+                        <label for="brand1"><span></span> <p id="accept">I accept the</p> <a id="terms" href="class=btn btn-lg btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Terms and Conditions</a></label>
+                
+                <br/>
+                <center><span id="error_signup"></span></center>
+    
+                <center>
+                    <div class="modal fade bs-example-modal-lg">
+                        <div class="modol-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button class="close" data-dismiss="modal"><span>Close</span></button>
+                                    <h3 class="modal-title" style="font-size:36px;"><b><ins>RULES</ins></b></h3>
+                                </div>
+                     
+                                <div class="modal-body">
+                                    <ul style="list-style-type:none">
+                                        <li>Don't copy any idea from startup's idea in this application</li>
+                                        <li>IF you copy or take any idea from those ideas this work will expose you to legal accountability</li>
+                                        <li>Privacy and security are available to all</li>
+                                    </ul>  
+                                </div>
+                  
+                            </div>
+                        </div>
+                    </div>
+                </center>
+        </div>
+                
+                
+                
+				<div class="group">
+					<input type="submit" id="signupbutton" class="button" value="Sign Up">
+				</div>
+                
+				<div class="hr"></div>
+				<div class="foot-lnk">
+                <div class="loader" id="loader2" style=""></div>    <!--Loader-->
+                
+				</div>
+			</div>
+            
+		</div>
+	</div>
+</div>
+
+    <script src="js/bootstrap.js"></script>
+</body>
+</html>

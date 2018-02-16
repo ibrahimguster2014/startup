@@ -1,0 +1,619 @@
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<title>Startup Talk</title> 
+<!-- For-Mobile-Apps-and-Meta-Tags -->
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Fortune Estates Widget Responsive, Login Form Web Template, Flat Pricing Tables, Flat Drop-Downs, Sign-Up Web Templates, Flat Web Templates, Login Sign-up Responsive Web Template, SmartPhone Compatible Web Template, Free Web Designs for Nokia, Samsung, LG, Sony Ericsson, Motorola Web Design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- //For-Mobile-Apps-and-Meta-Tags -->
+<!-- Custom Theme files -->
+<link href="css/bootstrap.css" type="text/css" rel="stylesheet" media="all">
+<link href="css/style.css" type="text/css" rel="stylesheet" media="all"> 
+<link rel="stylesheet" href="css/ken-burns.css" type="text/css" media="all" /> 
+<!-- //Custom Theme files -->
+
+  <script src="js/jquery-3.1.1.min.js" type="text/javascript"></script> 
+
+<!--..............................Firebase Includes...............................................--> 
+  <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase-messaging.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase-storage.js"></script>
+       
+  <script src="js/login.js" type="text/javascript"></script>  
+<!--.............................................................................................-->  
+
+
+    <style>
+.card 
+{
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #CCC;
+    border-radius: 0px;
+    text-align: center;
+    padding: 0;
+    background-color: #fff;
+    color: #000;
+}
+
+.card .avatar 
+{
+    position: relative;
+    margin: 5px 5px 5px 5px;
+    z-index: 100;
+    float: left;
+}
+
+p 
+{
+    font-weight: bold;
+    font-size: 12px;
+    letter-spacing: 0;
+    margin: 0 0 0px;
+    text-align: left;
+}
+
+.card .avatar img 
+{
+    width: 120px;
+    height: 120px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+        </style>
+
+
+
+
+
+
+<script>
+$(document).ready(function(){
+
+//......................................................Menu List.............................................................................................
+    
+    // Add PostEvent & Workshop to Menu List if the user is Lecturer
+    if(sessionStorage.getItem("type") == "Lecturer")
+    {
+        $("#append_here").after('<li><a href="PostEvent&Workshop.html"><i class="glyphicon glyphicon-thumbs-up"></i> Post Event&Workshop</a></li>');
+        $("#append_buttons").prepend('<br/><br/><input type="submit" value="My Workshops" id="myworkshops">');
+        $("#append_buttons").prepend('<br/><br/><input type="submit" value="My Events" id="myevents">');    
+    }
+    
+    // Add Browse Startup to Menu List if the user is Entrepreneur
+    if(sessionStorage.getItem("type") == "Entrepreneur")
+    {
+        $("#append_here").after('<li><a href="CreateStartup.html" id="menu_createstartup"><i class="glyphicon glyphicon-eye-open"></i> Create Startup </a></li>');
+        $("#append_buttons").prepend('<br/><br/><input type="submit" value="My startups" id="mystartups">');
+    }
+
+    if(sessionStorage.getItem("type") == "Instructor")
+    {
+        $("#append_buttons").prepend('<br/><br/><input type="submit" value="Rated Startups" id="ratedstartups">');    
+    }
+    
+    // Get user's information from the firebase
+    firebase.database().ref('users/' + sessionStorage.getItem("userid")).once('value').then(function(snapshot) 
+    {
+        document.getElementById("username").innerHTML = "User: " + snapshot.val().username;
+        document.getElementById("type").innerHTML = "Role: " + snapshot.val().type;  
+    });
+    
+    
+//............................................................................................................................................................
+
+
+//.............................................Dynamic Categories.........................................................
+        
+        firebase.database().ref('categories/').orderByKey().on("child_added", function(snapshot)       
+        {           
+            //alert("Works");          
+            var x = document.getElementById("search_category");
+            var option = document.createElement("option");
+            option.text = snapshot.val().category;
+            option.value = snapshot.val().category;
+            x.add(option);
+
+        });    
+    
+//........................................................................................................................   */ 
+
+var found;
+
+//..........................................Show All Workshops............................................................. 
+ firebase.database().ref('users/').orderByChild("date").on("child_added", function(snapshot)
+ {
+            //alert(snapshot.key);
+            //alert(snapshot2.startups);
+            found = true;
+            
+            firebase.database().ref('users/' + snapshot.key + '/Workshops/').orderByChild("date").on("child_added", function(snapshot2)
+            {
+                //alert(snapshot2.key);
+                
+                firebase.database().ref('users/' + snapshot.key + '/Workshops/' + snapshot2.key).once('value').then(function(snapshot3) 
+                {
+                            $("#append_startup").prepend(
+                            '<div class="card" onclick="goto_details(' + "'" + snapshot3.key + "','" + snapshot.key + "','" + snapshot.val().username + "'" + ');">' + 
+                            '<div class="avatar">' + 
+                            '<img id="getimage" src=' + "'" + snapshot3.val().logo + "'" + ' class="getname" style="border-radius:0"/> </div>' + 
+                            '<div class="content">' + '<p class="personName" style="color:#1db0d8; font-size: 16px">' + snapshot3.val().title + '</p>' +
+                            '<p class="profInfo"> Category: ' + snapshot3.val().category + '</p>'+ 
+                            '<p class="profInfo"> Lecturer: ' + snapshot.val().username + '</p>'+
+                            '<p class="profInfo"> Date: ' + snapshot3.val().date + '</p>'+  
+                            '<p class="profInfo"> Views: ' + snapshot3.val().views + '</p>'+ 
+                            '</div></div>'); 
+                });
+            
+            
+            });
+            
+            $("#loader").hide();
+ });   
+ 
+ setTimeout(function(){if(found == false){$("#loader").hide();}},2000);  
+//........................................................................................................................ 
+
+
+
+//.................................................Reset Search........................................................... 
+
+$("select").change(function()// Reset Search
+{
+  var category = document.getElementById("search_category").selectedIndex;
+  
+  var selected = document.getElementsByTagName("option")[category].value;
+  
+  $("div").remove(".card");
+  
+if(selected != "Category.") 
+{
+              firebase.database().ref('users/').orderByChild("date").on("child_added", function(snapshot) 
+     {
+                
+                firebase.database().ref('users/' + snapshot.key + '/Workshops/').orderByChild("category").on("child_added", function(snapshot2)
+                {
+                    
+                    firebase.database().ref('users/' + snapshot.key + '/Workshops/' + snapshot2.key).once('value').then(function(snapshot3) 
+                    {
+                                
+                        if(snapshot3.val().category == selected)
+                        {        
+                                $("#append_startup").prepend(
+                                '<div class="card" onclick="goto_details(' + "'" + snapshot3.key + "','" + snapshot.key + "','" + snapshot.val().username + "'" + ');">' + 
+                                '<div class="avatar">' + 
+                                '<img id="getimage" src=' + "'" + snapshot3.val().logo + "'" + ' class="getname" style="border-radius:0"/> </div>' + 
+                                '<div class="content">' + '<p class="personName" style="color:#1db0d8; font-size: 16px">' + snapshot3.val().title + '</p>' +
+                                '<p class="profInfo"> Category: ' + snapshot3.val().category + '</p>'+ 
+                                '<p class="profInfo"> Lecturer: ' + snapshot.val().username + '</p>'+
+                                '<p class="profInfo"> Date: ' + snapshot3.val().date + '</p>'+  
+                                '<p class="profInfo"> Views: ' + snapshot3.val().views + '</p>'+ 
+                                '</div></div>'); 
+                        }
+                        
+                    }); 
+                
+                
+                });
+     });
+}
+else
+{
+firebase.database().ref('users/').orderByChild("date").on("child_added", function(snapshot) 
+     {
+                
+                firebase.database().ref('users/' + snapshot.key + '/Workshops/').orderByChild("date").on("child_added", function(snapshot2)
+                {
+                    
+                    firebase.database().ref('users/' + snapshot.key + '/Workshops/' + snapshot2.key).once('value').then(function(snapshot3) 
+                    {
+                                
+                                $("#append_startup").prepend(
+                                '<div class="card" onclick="goto_details(' + "'" + snapshot3.key + "','" + snapshot.key + "','" + snapshot.val().username + "'" + ');">' + 
+                                '<div class="avatar">' + 
+                                '<img id="getimage" src=' + "'" + snapshot3.val().logo + "'" + ' class="getname" style="border-radius:0"/> </div>' + 
+                                '<div class="content">' + '<p class="personName" style="color:#1db0d8; font-size: 16px">' + snapshot3.val().title + '</p>' +
+                                '<p class="profInfo"> Category: ' + snapshot3.val().category + '</p>'+ 
+                                '<p class="profInfo"> Lecturer: ' + snapshot.val().username + '</p>'+
+                                '<p class="profInfo"> Date: ' + snapshot3.val().date + '</p>'+  
+                                '<p class="profInfo"> Views: ' + snapshot3.val().views + '</p>'+ 
+                                '</div></div>'); 
+                        
+                    }); 
+                
+                
+                });
+     });    
+}
+});
+//........................................................................................................................
+
+
+
+
+
+
+
+}); // on Document Ready closing brackets
+
+//..............................................Search Event BY Date...........................................................
+
+  
+
+function search_by_date(month)
+{
+  var category = document.getElementById("search_category").selectedIndex;
+  
+  var selected = document.getElementsByTagName("option")[category].value;        
+  
+  $("div").remove(".card");
+
+if(selected != "Category.")
+{
+    if(month != "0")
+    { 
+        
+            firebase.database().ref('users/').orderByChild("date").on("child_added", function(snapshot) 
+     {
+                //alert("Working");
+                //alert(snapshot2.startups);
+                
+                firebase.database().ref('users/' + snapshot.key + '/Workshops/').orderByChild("date").on("child_added", function(snapshot2)
+                {
+                    //alert(snapshot2.key);
+                    
+                    firebase.database().ref('users/' + snapshot.key + '/Workshops/' + snapshot2.key).once('value').then(function(snapshot3) 
+                    {
+                        //alert(snapshot3.val().category == selected);
+                        
+                        if(snapshot3.val().month == month  && snapshot3.val().category == selected)
+                        {
+                            
+                                $("#append_startup").prepend(
+                                '<div class="card" onclick="goto_details(' + "'" + snapshot3.key + "','" + snapshot.key + "','" + snapshot.val().username + "'" + ');">' + 
+                                '<div class="avatar">' + 
+                                '<img id="getimage" src=' + "'" + snapshot3.val().logo + "'" + ' class="getname" style="border-radius:0"/> </div>' + 
+                                '<div class="content">' + '<p class="personName" style="color:#1db0d8; font-size: 16px">' + snapshot3.val().title + '</p>' +
+                                '<p class="profInfo"> Category: ' + snapshot3.val().category + '</p>'+ 
+                                '<p class="profInfo"> Lecturer: ' + snapshot.val().username + '</p>'+
+                                '<p class="profInfo"> Date: ' + snapshot3.val().date + '</p>'+  
+                                '<p class="profInfo"> Views: ' + snapshot3.val().views + '</p>'+ 
+                                '</div></div>');                     
+                        }
+                        
+                    });
+                
+                
+                });
+                
+    
+     });       
+            
+     
+    }// for the if statement
+    
+    else
+    {
+        
+    firebase.database().ref('users/').orderByChild("date").on("child_added", function(snapshot)
+     {
+                //alert(snapshot.key);
+                //alert(snapshot2.startups);
+                
+                firebase.database().ref('users/' + snapshot.key + '/Workshops/').orderByChild("date").on("child_added", function(snapshot2)
+                {
+                    //alert(snapshot2.key);
+                    
+                    firebase.database().ref('users/' + snapshot.key + '/Workshops/' + snapshot2.key).once('value').then(function(snapshot3) 
+                    {
+                        if(snapshot3.val().category == selected)
+                        {
+                                $("#append_startup").prepend(
+                                '<div class="card" onclick="goto_details(' + "'" + snapshot3.key + "','" + snapshot.key + "','" + snapshot.val().username + "'" + ');">' + 
+                                '<div class="avatar">' + 
+                                '<img id="getimage" src=' + "'" + snapshot3.val().logo + "'" + ' class="getname" style="border-radius:0"/> </div>' + 
+                                '<div class="content">' + '<p class="personName" style="color:#1db0d8; font-size: 16px">' + snapshot3.val().title + '</p>' +
+                                '<p class="profInfo"> Category: ' + snapshot3.val().category + '</p>'+ 
+                                '<p class="profInfo"> Lecturer: ' + snapshot.val().username + '</p>'+
+                                '<p class="profInfo"> Date: ' + snapshot3.val().date + '</p>'+  
+                                '<p class="profInfo"> Views: ' + snapshot3.val().views + '</p>'+ 
+                                '</div></div>'); 
+                        }
+                    });
+                
+                
+                });
+     });       
+    }// End of else statement
+
+
+}//End of if statement
+
+else
+{
+    if(month != "0")
+    { 
+        
+            firebase.database().ref('users/').orderByChild("date").on("child_added", function(snapshot) 
+     {
+                //alert("Working");
+                //alert(snapshot2.startups);
+                
+                firebase.database().ref('users/' + snapshot.key + '/Workshops/').orderByChild("date").on("child_added", function(snapshot2)
+                {
+                    //alert(snapshot2.key);
+                    
+                    firebase.database().ref('users/' + snapshot.key + '/Workshops/' + snapshot2.key).once('value').then(function(snapshot3) 
+                    {
+                        //alert(snapshot3.val().category == selected);
+                        
+                        if(snapshot3.val().month == month)
+                        {
+                            
+                                $("#append_startup").prepend(
+                                '<div class="card" onclick="goto_details(' + "'" + snapshot3.key + "','" + snapshot.key + "','" + snapshot.val().username + "'" + ');">' + 
+                                '<div class="avatar">' + 
+                                '<img id="getimage" src=' + "'" + snapshot3.val().logo + "'" + ' class="getname" style="border-radius:0"/> </div>' + 
+                                '<div class="content">' + '<p class="personName" style="color:#1db0d8; font-size: 16px">' + snapshot3.val().title + '</p>' +
+                                '<p class="profInfo"> Category: ' + snapshot3.val().category + '</p>'+ 
+                                '<p class="profInfo"> Lecturer: ' + snapshot.val().username + '</p>'+
+                                '<p class="profInfo"> Date: ' + snapshot3.val().date + '</p>'+  
+                                '<p class="profInfo"> Views: ' + snapshot3.val().views + '</p>'+ 
+                                '</div></div>');                     
+                        }
+                        
+                    });
+                
+                
+                });
+                
+    
+     });       
+            
+     
+    }// for the if statement
+    
+    else
+    {
+        
+    firebase.database().ref('users/').orderByChild("date").on("child_added", function(snapshot)
+     {
+                //alert(snapshot.key);
+                //alert(snapshot2.startups);
+                
+                firebase.database().ref('users/' + snapshot.key + '/Workshops/').orderByChild("date").on("child_added", function(snapshot2)
+                {
+                    //alert(snapshot2.key);
+                    
+                    firebase.database().ref('users/' + snapshot.key + '/Workshops/' + snapshot2.key).once('value').then(function(snapshot3) 
+                    {
+
+                                $("#append_startup").prepend(
+                                '<div class="card" onclick="goto_details(' + "'" + snapshot3.key + "','" + snapshot.key + "','" + snapshot.val().username + "'" + ');">' + 
+                                '<div class="avatar">' + 
+                                '<img id="getimage" src=' + "'" + snapshot3.val().logo + "'" + ' class="getname" style="border-radius:0"/> </div>' + 
+                                '<div class="content">' + '<p class="personName" style="color:#1db0d8; font-size: 16px">' + snapshot3.val().title + '</p>' +
+                                '<p class="profInfo"> Category: ' + snapshot3.val().category + '</p>'+ 
+                                '<p class="profInfo"> Lecturer: ' + snapshot.val().username + '</p>'+
+                                '<p class="profInfo"> Date: ' + snapshot3.val().date + '</p>'+  
+                                '<p class="profInfo"> Views: ' + snapshot3.val().views + '</p>'+ 
+                                '</div></div>'); 
+                    });
+                
+                
+                });
+     });       
+    }// End of else statement    
+}
+
+
+}// End of function search_date()
+
+//.............................................................................................................................................................
+
+
+//........................................Open the page that has Details of the Selected Workshop................................................................ 
+
+function goto_details(StartupID,UserID,UserName)
+{
+    //alert("Works");
+    //alert(StartupID);
+    //alert(UserID);
+    //alert(UserName);
+    sessionStorage.setItem("StartupID",StartupID);//Store StartupID
+    sessionStorage.setItem("UserID",UserID); //Store UserID who created the startup
+    sessionStorage.setItem("UserName",UserName); //Store UserName who created the startup
+    sessionStorage.setItem("Type","/Workshops/"); //Store the Type Either (Startups,Events,Workshops)
+    window.location.href ='Details.html';    
+}
+
+//........................................................................................................................ 
+    
+</script>
+
+
+<!-- js -->
+<script src="js/jquery-2.2.3.min.js"></script> 
+<!-- //js -->
+<!-- pop-up-box -->
+<script src="js/jquery.magnific-popup.js" type="text/javascript"></script>
+        <script>
+    		$(document).ready(function() {
+				$('.popup-top-anim').magnificPopup({
+					type: 'inline',
+					fixedContentPos: false,
+					fixedBgPos: true,
+					overflowY: 'auto',
+					closeBtnInside: true,
+					preloader: false,
+					midClick: true,
+					removalDelay: 300,
+					mainClass: 'my-mfp-zoom-in'
+				});																							
+			}); 
+		</script>
+        
+
+<!-- //web-fonts -->
+</head>
+<body class="bg">
+	<div class="agile-main"> 
+	<div class="menu-wrap" id="style-1"> 
+	<nav class="top-nav">
+	<ul class="icon-list">
+	<li class="menu-title">Startup Talk</li>
+	<li id="append_here"><a href="others.html"><i class="glyphicon glyphicon-home"></i> Home </a></li>
+    <li><a href="startupbrowse.html"><i class="glyphicon glyphicon-list"></i> Startup </a></li>
+	<li><a href="Event.html"><i class="glyphicon glyphicon-star"></i> Event </a></li>
+	<li><a class="active" href="Workshop.html"><i class="glyphicon glyphicon-briefcase"></i> Workshop </a></li>
+	<!--<li><a href="CreateStartup.html" id="menu_createstartup"><i class="glyphicon glyphicon-eye-open"></i> Create Startup </a></li>-->
+	<!--<li><a href="PostEvent&Workshop.html"><i class="glyphicon glyphicon-thumbs-up"></i> Post Event&Workshop</a></li>																							       
+	</ul>--> 
+    
+	<div class="clearfix"> </div>
+	<script>
+	$( "li a.menu" ).click(function() {
+	$( "ul.nav-sub" ).slideToggle( 300, function() {
+							// Animation complete.
+	});
+	});
+    //$('.mobileSelect').mobileSelect();
+	</script> 
+	</li>
+<li><a href="contact.html"><i class="glyphicon glyphicon-envelope"></i> Contact </a></li>
+	</ul>
+	</nav>
+<button class="close-button" id="close-button">C</button>
+	</div> 
+	<div class="content-wrap" style="position: fixed">
+	<div class="header"> 
+	<div class="menu-icon">   
+ <button class="menu-button" id="open-button">O</button>
+         </div>
+	<div class="logo">
+        <h2><a href="#">Startup Talk</a></h2>
+    </div>
+
+    <div class="login">
+	    <a href="#small-dialog" class="sign-in popup-top-anim"><span class="glyphicon glyphicon-user"></span></a> 
+		            <!-- modal -->
+                    
+        <div id="small-dialog" class="mfp-hide">
+            <div class="login-modal"> 	
+                <div class="booking-info">
+                    <h3 id="username" style="color: #1db0d8;">User: Profile</h3>
+                    <br/><br/>
+                    <h3 id="type" style="color: #1db0d8;">Role: Profile</h3>
+                    <br/><br/>
+                    <div class="login-form" id="append_buttons">
+                        <br/><br/><input type="submit" value="Sign Out" id="logout">    
+                    </div>
+                    
+                </div> 
+	        </div>
+	    </div>
+
+					<!-- //modal-two --> 
+	</div> 
+	    <div class="clearfix"> </div>
+	</div>
+    
+	            <br>
+                
+				<h2 style="color:white; text-align:center;"><b>Workshops List</b></h2>
+                                            <br/>
+                                            
+                <select class="form-control mobileSelect" style="width:100%;" name="StartupCategory" id="search_category"> <span id="error_create4"></span>
+                    <!--<option value="Category.">Category.</option>-->
+                </select>                            
+                                            
+                                            
+                <div class="navbar">
+                  <a href="#" onclick="search_by_date('0')">All</a>
+                  <a href="#" onclick="search_by_date('01')">Jan</a>
+                  <a href="#" onclick="search_by_date('02')">Feb</a>
+                  <a href="#" onclick="search_by_date('03')">Mar</a>
+                  <a href="#" onclick="search_by_date('04')">Apr</a>
+                  <a href="#" onclick="search_by_date('05')">May</a>
+                  <a href="#" onclick="search_by_date('06')">Jun</a>
+                  <a href="#" onclick="search_by_date('07')">Jul</a>
+                  <a href="#" onclick="search_by_date('08')">Aug</a>
+                  <a href="#" onclick="search_by_date('09')">Sep</a>
+                  <a href="#" onclick="search_by_date('10')">Oct</a>
+                  <a href="#" onclick="search_by_date('11')">Nov</a>
+                  <a href="#" onclick="search_by_date('12')">Dec</a>
+                </div>                            
+                                            
+                                            
+                                            
+                            
+            <!--    <input style="width:100%;" type="button" name="mini" value="Search" data-mini="true" onclick="Search_by_category();"/>
+    		-->
+            
+            <div class=""> 
+
+                <div class="loader" id="loader" style="position: fixed;top: 50%;left: 46.5%"></div>            
+                            
+                <div class="" id="append_startup"> <!--Dynamically Add Startups here-->
+                                    
+                </div>
+             
+            </div> 
+                
+			
+	</div> 
+    
+	<!-- menu-js -->
+	<script src="js/classie.js"></script>
+	<script src="js/main.js"></script>
+	<!-- //menu-js -->
+	<!-- pop-up-box -->
+	<script src="js/jquery.magnific-popup.js" type="text/javascript"></script>
+	<script>
+		$(document).ready(function() {
+			$('.popup-top-anim').magnificPopup({
+				type: 'inline',
+				fixedContentPos: false,
+				fixedBgPos: true,
+				overflowY: 'auto',
+				closeBtnInside: true,
+				preloader: false,
+				midClick: true,
+				removalDelay: 300,
+				mainClass: 'my-mfp-zoom-in'
+			});																							
+		}); 
+	</script>
+	<!--//pop-up-box -->
+	<!-- nicescroll-js -->
+	<script src="js/jquery.nicescroll.min.js"></script> 
+	<script>
+		$(document).ready(function() {
+	  
+			var nice = $("html").niceScroll();  // The document page (body)
+		
+			$("#div1").html($("#div1").html()+' '+nice.version);
+		
+			$("#boxscroll").niceScroll({cursorborder:"",cursorcolor:"#00F",boxzoom:true}); // First scrollable DIV
+		});
+	</script>
+	<!-- //nicescroll-js -->
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/bootstrap.js"></script>
+</body>
+</html>
